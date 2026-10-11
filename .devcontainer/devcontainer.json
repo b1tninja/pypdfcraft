@@ -1,0 +1,26 @@
+{
+  "name": "pypdfcraft (Linux)",
+  "dockerComposeFile": "../docker/compose.yml",
+  "service": "devcontainer",
+  "workspaceFolder": "/work/pypdfcraft",
+  "remoteUser": "root",
+  "postCreateCommand": "PYTHON=/opt/python/cp312-cp312/bin/python /entrypoint.sh develop",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "rust-lang.rust-analyzer",
+        "tamasfe.even-better-toml",
+        "ms-python.python",
+        "ms-python.debugpy"
+      ],
+      "settings": {
+        "rust-analyzer.linkedProjects": ["/work/pypdfcraft/Cargo.toml"],
+        "python.defaultInterpreterPath": "/work/pypdfcraft/.venv/bin/python",
+        "python.testing.pytestEnabled": true,
+        "python.testing.pytestArgs": ["tests"]
+      }
+    }
+  },
+  "forwardPorts": [],
+  "features": {}
+}

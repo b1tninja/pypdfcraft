@@ -1,0 +1,62 @@
+# Run from repo root:  docker compose -f docker/compose.yml run --rm dev
+# Or from parent (D:\code):  docker compose -f pypdfcraft/docker/compose.yml run --rm wheel
+#
+# Requires Docker Desktop (Linux engine). Set PDFCRAFT_ROOT / PYPDFCRAFT_ROOT if paths differ.
+
+name: pypdfcraft
+
+services:
+  wheel:
+    build:
+      context: ../..
+      dockerfile: pypdfcraft/docker/Dockerfile
+    volumes:
+      - ${PDFCRAFT_ROOT:-../../pdfcraft}:/work/pdfcraft
+      - /work/pdfcraft/target
+      - ${PYPDFCRAFT_ROOT:-..}:/work/pypdfcraft
+      - /work/pypdfcraft/.venv
+      - /work/pypdfcraft/target
+    working_dir: /work/pypdfcraft
+    command: ["build"]
+
+  dev:
+    build:
+      context: ../..
+      dockerfile: pypdfcraft/docker/Dockerfile
+    volumes:
+      - ${PDFCRAFT_ROOT:-../../pdfcraft}:/work/pdfcraft
+      - /work/pdfcraft/target
+      - ${PYPDFCRAFT_ROOT:-..}:/work/pypdfcraft
+      - /work/pypdfcraft/.venv
+      - /work/pypdfcraft/target
+    working_dir: /work/pypdfcraft
+    stdin_open: true
+    tty: true
+    command: ["shell"]
+
+  test:
+    build:
+      context: ../..
+      dockerfile: pypdfcraft/docker/Dockerfile
+    volumes:
+      - ${PDFCRAFT_ROOT:-../../pdfcraft}:/work/pdfcraft
+      - /work/pdfcraft/target
+      - ${PYPDFCRAFT_ROOT:-..}:/work/pypdfcraft
+      - /work/pypdfcraft/.venv
+      - /work/pypdfcraft/target
+    working_dir: /work/pypdfcraft
+    command: ["test"]
+
+  # Long-running service for VS Code / Cursor Dev Containers (see .devcontainer/).
+  devcontainer:
+    build:
+      context: ../..
+      dockerfile: pypdfcraft/docker/Dockerfile
+    volumes:
+      - ${PDFCRAFT_ROOT:-../../pdfcraft}:/work/pdfcraft
+      - /work/pdfcraft/target
+      - ${PYPDFCRAFT_ROOT:-..}:/work/pypdfcraft
+      - /work/pypdfcraft/.venv
+      - /work/pypdfcraft/target
+    working_dir: /work/pypdfcraft
+    command: ["idle"]

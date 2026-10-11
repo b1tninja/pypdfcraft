@@ -1,0 +1,50 @@
+name: docker
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "docker/**"
+      - ".devcontainer/**"
+      - "src/**"
+      - "tests/**"
+      - "Cargo.toml"
+      - "Cargo.lock"
+      - "pyproject.toml"
+  pull_request:
+    paths:
+      - "docker/**"
+      - ".devcontainer/**"
+      - "src/**"
+      - "tests/**"
+      - "Cargo.toml"
+      - "Cargo.lock"
+      - "pyproject.toml"
+  workflow_dispatch:
+
+concurrency:
+  group: docker-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  compose-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: pypdfcraft
+
+      - uses: actions/checkout@v4
+        with:
+          repository: storytold/pdfcraft
+          ref: ${{ vars.PDFCRAFT_REF || 'main' }}
+          path: pdfcraft
+
+      - name: Docker compose test
+        working-directory: pypdfcraft
+        env:
+          PDFCRAFT_ROOT: ${{ github.workspace }}/pdfcraft
+          PYPDFCRAFT_ROOT: ${{ github.workspace }}/pypdfcraft
+        run: |
+          docker compose -f docker/compose.yml build test
+          docker compose -f docker/compose.yml run --rm test

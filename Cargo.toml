@@ -1,0 +1,30 @@
+[package]
+name = "pypdfcraft"
+version = "0.1.0"
+edition = "2021"
+license = "MIT OR Apache-2.0"
+description = "Python bindings for the pdfcraft PDF engine"
+repository = "https://github.com/storytold/pypdfcraft"
+rust-version = "1.94"
+
+[lib]
+name = "pypdfcraft"
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+pyo3 = { version = "0.23", features = ["abi3-py310"] }
+pdfcraft-automation = { path = "../pdfcraft/crates/automation", default-features = false }
+pdfcraft-engine = { path = "../pdfcraft/crates/engine" }
+pdfcraft-render = { path = "../pdfcraft/crates/render" }
+serde_json = "1"
+png = "0.18"
+tempfile = "3"
+
+[patch.crates-io]
+hayro-interpret = { path = "../pdfcraft/vendor/hayro-interpret" }
+hayro = { path = "../pdfcraft/vendor/hayro" }
+hayro-syntax = { path = "../pdfcraft/vendor/hayro-syntax" }
+hayro-jbig2 = { path = "../pdfcraft/vendor/hayro-jbig2" }
+lopdf = { path = "../pdfcraft/vendor/lopdf" }
+winit = { path = "../pdfcraft/vendor/winit" }
+egui-wgpu = { path = "../pdfcraft/vendor/egui-wgpu" }

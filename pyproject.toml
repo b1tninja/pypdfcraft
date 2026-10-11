@@ -1,0 +1,38 @@
+[build-system]
+requires = ["maturin>=1.7,<2"]
+build-backend = "maturin"
+
+[project]
+name = "pypdfcraft"
+version = "0.1.0"
+description = "Python bindings for the pdfcraft PDF engine (MIT/Apache-2.0)"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT OR Apache-2.0"
+keywords = ["pdf", "pdfcraft", "render", "extract"]
+classifiers = [
+    "Programming Language :: Rust",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Topic :: Multimedia :: Graphics",
+]
+
+[project.urls]
+Homepage = "https://github.com/storytold/pypdfcraft"
+Repository = "https://github.com/storytold/pypdfcraft"
+
+[tool.maturin]
+features = ["pyo3/extension-module"]
+python-source = "python"
+module-name = "pypdfcraft._native"
+
+[tool.maturin.generate-ci.github]
+pytest = true
+trusted-publishing = true
+publishing-environment = "release"
+
+[tool.maturin.generate-ci.github.linux]
+manylinux = "2_28"
+targets = ["x86_64", "aarch64"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
